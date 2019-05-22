@@ -1,0 +1,94 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+
+
+
+header {
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  padding: 5px 15px;
+  background: #61dafb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+main {
+  position: relative;
+  top: 80px;
+}
+
+
+.btn {
+  padding: 10px 20px;
+  margin: 5px auto;
+  min-width: 100px;
+  text-transform: capitalize;
+  border: 1px solid #20a8ce;
+  background: transparent;
+  color: #20a8ce;
+  font-weight: bold;
+  cursor: pointer;
+  display: block;
+  outline: none;
+}
+
+.btn-primary {
+  background: #20a8ce;
+  color: #fff;
+}
+
+.camera-roll {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.camera-roll video {
+  width: 100%;
+  height: calc(100% - 50px);
+  margin: auto;
+}
+
+.d-none{
+  display: none;
+}
+.d-block{
+  display: block;
+}
+
+.camera-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: #fff;
+}
+
+.camera-preview canvas {
+  margin: auto;
+}
+
+#imgElm {
+  display: none;
+}

@@ -1,0 +1,18 @@
+{
+    "public_id": "abcd123",
+    "capture_configuration":[
+        {
+            "document_type": "selfie",
+            "camera_side": "front",
+            "overlay_type": "oval",
+            "image_url":"https://storage.googleapis.com/0"
+        },
+        {
+            "document_type": "id",
+            "camera_side": "both",
+            "overlay_type": "rectangle",
+            "image_url":"https://storage.googleapis.com/1"
+        }
+    ]
+}
+    
