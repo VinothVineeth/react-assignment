@@ -129,13 +129,6 @@ export default class App extends Component {
 
   }
 
-  renderComponent = () => {
-    let { selectedOption = {} } = this.state
-    let { document_type = 'viswa' } = selectedOption
-    return <h1>{document_type}</h1>
-
-  }
-
   initCanvas() {
     // Get the canvas and obtain a context for
     // drawing in it
@@ -215,6 +208,23 @@ export default class App extends Component {
 
     // Draws current image from the video element into the canvas
    ctx.drawImage(video, 0,0, canvas.width, canvas.height);
+
+   let captureFrame = document.getElementById('captureFrameDiv');
+   let captureFrameWidth = captureFrame.clientWidth
+   let captureFrameHeight = captureFrame.clientHeight
+   let captureFramePosX = 0
+   let captureFramePosY = captureFrame.offsetTop - 100
+
+   console.log('frame data', captureFramePosX, captureFramePosY, captureFrameWidth, captureFrameHeight);
+   
+  if(document_type !== 'selfie') {
+    var imageData = ctx.getImageData(captureFramePosX, captureFramePosY, captureFrameWidth, captureFrameHeight);
+    console.log('imageData----', imageData);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.putImageData(imageData, 0, 0)
+  }
+
+
    var image = canvas.toDataURL("image/png")
   // console.log(image);
 
@@ -291,7 +301,7 @@ export default class App extends Component {
     return (
       <>
         <header>
-          Face Recognition App
+          Attachment Uploader
         </header>
 
 
@@ -317,6 +327,7 @@ export default class App extends Component {
 
           <div className={`camera-roll ${  showCameraRoll ? 'd-block' : 'd-none'  } `}>
             <video onClick={e => this.snapshot(this)} width="400" height="400" id="video" autoPlay></video>
+            <div id="captureFrame"><div id="captureFrameDiv"></div></div>
             <button className="btn btn-primary" onClick={e => this.handleCaptureClick()}>Capture</button>
           </div>
       

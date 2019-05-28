@@ -8,7 +8,7 @@
             "image_url":"https://storage.googleapis.com/0"
         },
         {
-            "document_type": "id",
+            "document_type": "document",
             "camera_side": "both",
             "overlay_type": "rectangle",
             "image_url":"https://storage.googleapis.com/1"
