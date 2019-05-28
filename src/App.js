@@ -106,8 +106,11 @@ export default class App extends Component {
     console.log(config);
     this.setState({
       selectedOption:config
+    },()=>{
+
+      console.log('selectedOption', this.state.selectedOption);
+      this.startWebcam()
     })
-    this.startWebcam()
     
   }
 
@@ -163,6 +166,8 @@ export default class App extends Component {
       } else {
         videoConstraints.facingMode = 'environment';
       }
+      console.log('videoConstraints', videoConstraints, this.state.selectedOption);
+      
       const constraints = {
         video: videoConstraints,
         audio: false
