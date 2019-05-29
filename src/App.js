@@ -2,7 +2,7 @@ import React, {
   Component
 } from 'react'
 
-import {  getConfiguration, uploadImageToCloud } from "./services/api"
+import {  getConfiguration, uploadImageToCloud, postSubmit } from "./services/api"
 
 
 //Import face-api - which is written on top of tensorflow js
@@ -63,6 +63,7 @@ export default class App extends Component {
     selectedOption: {},
     showCameraPreview: false,
     showCameraRoll: false,
+    capturedImage: null
     
   }
 
@@ -118,13 +119,32 @@ export default class App extends Component {
     this.snapshot()
   }
 
+  handleCancelUpload = () => {
+    this.setState({
+      showCameraPreview: false,
+      showCameraRoll: false
+    })
+  }
+
   uploadImg() {
     console.log('uploading img');
 
-    uploadImageToCloud().then((data)=>{
+    uploadImageToCloud(this.state.capturedImage).then((data)=>{
+
       this.setState({
         showCameraPreview: false
       })
+
+      let Obj = {
+        public_id: this.state.config.public_id,
+        action: "initiate_check",
+        s3_url: data.Location
+      }
+
+      postSubmit(Obj).then( (res) =>{
+        console.log('res', res);
+        
+      } )
     })
 
   }
@@ -150,6 +170,7 @@ export default class App extends Component {
     if (navigator.getUserMedia) {
 
       this.setState({
+        showCameraPreview: false,
         showCameraRoll: true
       })
 
@@ -224,6 +245,14 @@ export default class App extends Component {
     ctx.putImageData(imageData, 0, 0)
   }
 
+  if(document_type == 'selfie') {
+    // ctx.globalCompositeOperation='destination-in';
+    // ctx.beginPath();
+    // ctx.arc(captureFrameWidth/2,captureFrameHeight/2,captureFrameHeight/2,captureFramePosY,Math.PI*2);
+    // ctx.closePath();
+    // ctx.fill();    
+  }
+
 
    var image = canvas.toDataURL("image/png")
   // console.log(image);
@@ -231,6 +260,14 @@ export default class App extends Component {
    canvas.toBlob((blob) => {
     console.log('blob--', blob);
     imgElement.src = image
+
+    this.setState({
+      capturedImage: blob
+    },()=>{
+
+      console.log('captured image---', this.state.capturedImage);
+    })
+
 
 
     if(document_type=='selfie'){
@@ -266,6 +303,8 @@ export default class App extends Component {
         
 
       if (!fullFaceDescriptions.length) {
+        alert('No face found. Please try again')
+        this.startWebcam()
         return
       }
 
@@ -295,7 +334,8 @@ export default class App extends Component {
     let { 
           config: { capture_configuration = [] },
           showCameraRoll,
-          showCameraPreview
+          showCameraPreview,
+          selectedOption
         } = this.state
 
     return (
@@ -310,9 +350,11 @@ export default class App extends Component {
 
           {capture_configuration.map((config, i) =>
             (
-              <button className="btn btn-primary" key={i} onClick={e => this.handleBtnClick(config)} >
-                Upload {config.document_type}
-              </button>
+              <div className="d-flex" key={i} >
+                <button className="btn btn-primary" onClick={e => this.handleBtnClick(config)} >
+                  Upload {config.document_type}
+                </button>
+              </div>
             )
           )}
 
@@ -321,13 +363,15 @@ export default class App extends Component {
       
           <div className={`camera-preview ${  showCameraPreview ? 'd-block' : 'd-none'  } `} >
             <canvas  id="myCanvas" width="400" height="350"></canvas>
+            <button className="btn btn-primary" onClick={e => this.startWebcam()}>Re-capture</button>
             <button className="btn btn-primary" onClick={e => this.uploadImg()}>Upload</button>
           </div>
       
 
           <div className={`camera-roll ${  showCameraRoll ? 'd-block' : 'd-none'  } `}>
             <video onClick={e => this.snapshot(this)} width="400" height="400" id="video" autoPlay></video>
-            <div id="captureFrame"><div id="captureFrameDiv"></div></div>
+            <div id="captureFrame"><div id="captureFrameDiv" className={`${  selectedOption.overlay_type=='oval' ? 'oval' : 'rectangle'  } `} ></div></div>
+            <button className="btn btn-primary" onClick={e => this.handleCancelUpload()}>Cancel</button>
             <button className="btn btn-primary" onClick={e => this.handleCaptureClick()}>Capture</button>
           </div>
       
