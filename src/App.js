@@ -97,6 +97,7 @@ export default class App extends Component {
   async initModels() {
     await getCurrentFaceDetectionNet().load('/weights/')
 
+    await faceapi.nets.ssdMobilenetv1.load('/weights/')
     await faceapi.nets.faceLandmark68Net.load('/weights/')
     await faceapi.nets.faceLandmark68TinyNet.load('/weights/')
     await faceapi.nets.faceRecognitionNet.load('/weights/')
