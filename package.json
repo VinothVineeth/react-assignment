@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@google-cloud/storage": "^2.5.0",
+    "@google-cloud/storage": "^7.17.3",
     "aws-sdk": "^2.464.0",
     "face-api.js": "^0.20.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
